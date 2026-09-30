@@ -1,0 +1,8 @@
+AzureActivity
+| where TimeGenerated > ago(1h)
+| where ActivityStatusValue == "Failure"
+| where ActivitySubstatusValue contains "Unauthorized"
+    or ActivitySubstatusValue contains "Forbidden"
+| summarize FailureCount=count()
+    by Caller, bin(TimeGenerated, 15m)
+| where FailureCount >= 3

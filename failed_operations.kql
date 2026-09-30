@@ -1,0 +1,6 @@
+AzureActivity
+| where TimeGenerated > ago(1h)
+| where ActivityStatusValue == "Failure"
+| summarize FailureCount=count()
+    by Caller, bin(TimeGenerated, 15m)
+| where FailureCount >= 5

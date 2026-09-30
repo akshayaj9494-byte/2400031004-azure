@@ -1,0 +1,6 @@
+AzureActivity
+| where TimeGenerated > ago(1h)
+| where OperationNameValue contains "delete"
+| summarize DeleteCount=count()
+    by Caller, bin(TimeGenerated, 15m)
+| where DeleteCount >= 3

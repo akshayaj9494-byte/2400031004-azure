@@ -1,34 +1,42 @@
 # Azure Sentinel Analytics Rules for a Small Security Team
 
 ## Problem
-Too many false alerts make it difficult for a small security team to find real threats.
+Default security rules can create too many false alerts. A small security team needs focused detection rules.
 
 ## Solution
-We use Microsoft Sentinel, Azure Activity Logs and KQL queries to detect suspicious activity and reduce false alerts.
+Azure Activity Logs are collected in Log Analytics and analyzed with KQL.
 
-## Architecture
-Azure → Azure Activity Logs → Log Analytics → Microsoft Sentinel → KQL → Alerts
+### Architecture
+Azure Subscription
+→ Azure Activity Logs
+→ Log Analytics Workspace
+→ Microsoft Sentinel
+→ KQL Detection Queries
+→ Analytics Rules
+→ Alerts / Incidents
+→ Security Team
 
-## Azure Resources
+## Implemented
+- Azure for Students subscription
 - Resource Group: `rg-sentinel-project`
 - Log Analytics Workspace: `law-sentinel-project`
-- Microsoft Sentinel
-- Azure Activity Logs
+- Microsoft Sentinel enabled
+- Azure Activity logs connected
+- Log ingestion verified
+- `AzureActivity | count` returned 8 records during testing
+- KQL detection query tested
+- Query saved
 
-## KQL Queries
-We created detection queries for:
-- Multiple Failed Azure Operations
-- Suspicious Resource Deletion
-- Repeated Authorization Failures
+## Detection Rules
+1. Multiple Failed Azure Operations
+2. Suspicious Resource Deletion
+3. Repeated Authorization Failures
 
-## Results
-- Azure Activity logs successfully received
-- 8 activity records were found during testing
-- KQL queries were tested successfully
-- No suspicious activity matching the failure threshold was found during testing
+## False Positive Reduction
+Instead of alerting on every failed activity, the queries group events by caller and time window and use a threshold.
 
-## Project Evidence
-Screenshots of the Azure setup and KQL testing are included in this repository.
+## Current Limitation
+Analytics rule deployment through the Defender portal could not be completed because the account does not have the required Defender/Sentinel onboarding permissions.
 
-## Team Project
-Azure Sentinel Analytics Rules for a Small Security Team
+## Screenshots
+See the `Screenshots` folder.
